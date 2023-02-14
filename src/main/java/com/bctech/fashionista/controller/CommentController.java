@@ -32,22 +32,6 @@ public class CommentController {
     }
 
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<CommentResponseDto>> createCommentByAdmin(@RequestBody @Valid CommentRequestDto request, @RequestBody AdminResponseDto adminResponseDto) {
-
-
-        CommentResponseDto response = commentService.createCommentByAdmin(request, adminResponseDto);
-
-        return ResponseEntity.ok().body(
-                ApiResponse.<CommentResponseDto>builder()
-                        .data(response)
-                        .message("SUCCESS")
-                        .status(HttpStatus.CREATED)
-                        .build()
-        );
-    }
-
-
     @DeleteMapping("{id:[\\d]+}")
     public  ResponseEntity<ApiResponse<Boolean>> deleteComment(@PathVariable Long id) {
         Boolean response = commentService.deleteComment(id);
@@ -61,7 +45,7 @@ public class CommentController {
         );
     }
 
-    @GetMapping("/viewAllComments/{id:[\\d]+}")
+    @GetMapping("/viewComments/{id:[\\d]+}")
     public ResponseEntity<ApiResponse<PaginateResponse<CommentResponseDto>>> fetchAllCommentsOfAPost(@RequestParam int start, @RequestParam int limit, @PathVariable Long id ) {
         PaginateResponse<CommentResponseDto> response = commentService.fetchCommentOfAPost(id, start, limit);
         return ResponseEntity.ok().body(ApiResponse.<PaginateResponse<CommentResponseDto>>builder()
@@ -71,7 +55,7 @@ public class CommentController {
                 .build());
     }
 
-    @GetMapping("/viewAllComments/{id:[\\d]+}")
+    @GetMapping("/viewVisitorComments/{id:[\\d]+}")
     public ResponseEntity<ApiResponse<PaginateResponse<CommentResponseDto>>> fetchAllCommentsOfAVisitor(@RequestParam int start, @RequestParam int limit, @PathVariable Long id) {
 
         PaginateResponse<CommentResponseDto> response = commentService.getAllCommentsOfVisitorById(id,start, limit);

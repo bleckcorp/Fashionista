@@ -5,6 +5,7 @@ import com.bctech.fashionista.dto.response.*;
 import com.bctech.fashionista.service.LikeService;
 import com.bctech.fashionista.service.PostService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,14 +15,18 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("post")
 @RequiredArgsConstructor
+@Slf4j
 public class PostController {
     private final PostService postService;
     private final LikeService likeService;
 
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<PostResponseDto>> createPost(@RequestBody @Valid PostRequestDTO request, @RequestBody AdminResponseDto adminResponseDto) {
-        PostResponseDto response = postService.createPost(request, adminResponseDto.getId());
+    @PostMapping("/")
+    public ResponseEntity<ApiResponse<PostResponseDto>> createPost(@RequestBody @Valid PostRequestDTO request) {
+
+        log.info(" About to use the Request to make a Post: {}", request.getAdminId());
+        log.info(" About to use the Request to make a Post with categories: {}", request.getCategories());
+        PostResponseDto response = postService.createPost(request);
 
         return ResponseEntity.ok().body(
                 ApiResponse.<PostResponseDto>builder()

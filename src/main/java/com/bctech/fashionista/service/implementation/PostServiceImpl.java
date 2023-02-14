@@ -15,6 +15,7 @@ import com.bctech.fashionista.service.PostService;
 import com.bctech.fashionista.utils.ModelMapperUtils;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final CategoriesRepository categoriesRepository;
@@ -31,10 +33,10 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public PostResponseDto createPost(PostRequestDTO postRequestDto, Long adminId) {
+    public PostResponseDto createPost(PostRequestDTO postRequestDto) {
 
-        var admin = AdminRepository.findById(adminId)
-                .orElseThrow(() -> new AdminNotFoundException(adminId));
+        var admin = AdminRepository.findById(postRequestDto.getAdminId())
+                .orElseThrow(() -> new AdminNotFoundException(postRequestDto.getAdminId()));
 
         var post = Post.builder()
                 .title(postRequestDto.getTitle())
@@ -126,7 +128,6 @@ public class PostServiceImpl implements PostService {
         // to cater for multiple categories, we need to split the string into a set of categories
         var s= categoryString.toUpperCase().split(",");
 
-
         // we need to convert the string array into a set of categories
         var categories = Arrays.stream(s)
                 //Check if category exists, if not create a new one
@@ -134,6 +135,7 @@ public class PostServiceImpl implements PostService {
                     var newCategory = Categories.builder()
                             .title(category)
                             .build();
+                    log.info("Category single string is {}", newCategory.getTitle());
                     return categoriesRepository.save(newCategory);
                 }))
                 .collect(Collectors.toSet());

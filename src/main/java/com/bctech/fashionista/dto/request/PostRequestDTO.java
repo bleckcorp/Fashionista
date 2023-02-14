@@ -14,4 +14,5 @@ public class PostRequestDTO {
     private String content;
     private String imagePath;
     private String categories;
+    private Long adminId;
 }

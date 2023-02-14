@@ -7,7 +7,7 @@ import com.bctech.fashionista.dto.response.PostResponseDto;
 
 public interface PostService {
 
-    PostResponseDto createPost(PostRequestDTO postRequestDto, Long adminId);
+    PostResponseDto createPost(PostRequestDTO postRequestDto);
 
     PaginateResponse<PostResponseDto> getAllPosts(int start, int limit);
 
