@@ -2,6 +2,7 @@ package com.bctech.fashionista.controller;
 
 import com.bctech.fashionista.dto.request.*;
 import com.bctech.fashionista.dto.response.*;
+import com.bctech.fashionista.entity.Post;
 import com.bctech.fashionista.service.LikeService;
 import com.bctech.fashionista.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -37,12 +38,14 @@ public class PostController {
         );
     }
 
-    @PutMapping("{id:[\\d]+}")
+    @PutMapping("{postId:[\\d]+}")
     public ResponseEntity<ApiResponse<PostResponseDto>> updatePost(@RequestBody PostRequestDTO request,
-                                                                     @PathVariable Long id, @RequestBody AdminResponseDto adminResponseDto) {
+                                                                     @PathVariable Long postId) {
         // verify if the author is the same as the logged in user
-        var authorId = postService.getAuthorOfPost(id);
-        if (!adminResponseDto.getId().equals(authorId)) {
+        var authorId = postService.getAuthorOfPost(postId);
+        log.info("Author of post: {}", authorId);
+        log.info("Post id: {}", postId);
+        if (!request.getAdminId().equals(authorId)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
                     ApiResponse.<PostResponseDto>builder()
                             .message("You are not the author of this post")
@@ -51,7 +54,7 @@ public class PostController {
             );
         }
 
-        PostResponseDto response = postService.updatePost(request, id);
+        PostResponseDto response = postService.updatePost(request, postId);
 
         return ResponseEntity.ok().body(
                 ApiResponse.<PostResponseDto>builder()
@@ -75,7 +78,7 @@ public class PostController {
         );
     }
 
-    @GetMapping("viewAllPosts")
+    @GetMapping("/viewAllPosts")
     public ResponseEntity<ApiResponse<PaginateResponse<PostResponseDto>>> fetchAllPosts(@RequestParam int start, @RequestParam int limit) {
         PaginateResponse<PostResponseDto> response = postService.getAllPosts(start, limit);
         return ResponseEntity.ok().body(ApiResponse.<PaginateResponse<PostResponseDto>>builder()

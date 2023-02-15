@@ -10,5 +10,4 @@ public interface CategoriesRepository extends JpaRepository<Categories, Long> {
 
     Optional<Categories> findByTitle(String title);
 
-    List<Categories> findCategoriesByPostsContains(Long id);
 }

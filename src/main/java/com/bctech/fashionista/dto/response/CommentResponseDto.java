@@ -1,5 +1,6 @@
 package com.bctech.fashionista.dto.response;
 
+import com.bctech.fashionista.constants.AuthorType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,9 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CommentResponseDto {
     private String content;
-    private Long postId;
-    private Long adminId;
-    //TODO: will model mapper be able to map this?
-    private String visitorName;
-    private String visitorEmail;
+    private Long id;
+    private AuthorType authorType;
 }

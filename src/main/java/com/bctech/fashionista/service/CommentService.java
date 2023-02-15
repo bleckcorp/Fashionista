@@ -10,7 +10,7 @@ public interface CommentService {
     CommentResponseDto createCommentByAdmin(CommentRequestDto commentRequestDto, AdminResponseDto adminResponseDto);
 
 
-    CommentResponseDto createCommentByVisitor(CommentRequestDto commentRequestDto, VisitorResponseDto visitorResponseDto);
+    CommentResponseDto createCommentByVisitor(CommentRequestDto commentRequestDto);
 
     PaginateResponse<CommentResponseDto> fetchCommentOfAPost(Long postId, int start, int limit);
 

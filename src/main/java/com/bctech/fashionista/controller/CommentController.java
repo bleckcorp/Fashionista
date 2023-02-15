@@ -19,8 +19,8 @@ public class CommentController {
  private final CommentService commentService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<CommentResponseDto>> createCommentByVisitor(@RequestBody @Valid CommentRequestDto request, @RequestBody VisitorResponseDto visitorResponseDto) {
-        CommentResponseDto response = commentService.createCommentByVisitor(request, visitorResponseDto);
+    public ResponseEntity<ApiResponse<CommentResponseDto>> createCommentByVisitor(@RequestBody @Valid CommentRequestDto request) {
+        CommentResponseDto response = commentService.createCommentByVisitor(request);
 
         return ResponseEntity.ok().body(
                 ApiResponse.<CommentResponseDto>builder()

@@ -9,7 +9,7 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class VisitorRequestDto {
-    private String name;
+    private String fullName;
     private String password;
     private String confirmPassword;
     private String email;

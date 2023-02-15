@@ -49,9 +49,9 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentResponseDto createCommentByVisitor(CommentRequestDto commentRequestDto, VisitorResponseDto visitorResponseDto){
-        var visitor = visitorRepository.findById(visitorResponseDto.getId())
-                .orElseThrow(() -> new VisitorNotFoundException(visitorResponseDto.getId()));
+    public CommentResponseDto createCommentByVisitor(CommentRequestDto commentRequestDto){
+        var visitor = visitorRepository.findById(commentRequestDto.getVisitorId())
+                .orElseThrow(() -> new VisitorNotFoundException(commentRequestDto.getVisitorId()));
 
         var post = postRepository.findById(commentRequestDto.getPostId())
                 .orElseThrow(() -> new PostNotFoundException(commentRequestDto.getPostId()));
@@ -59,7 +59,7 @@ public class CommentServiceImpl implements CommentService {
         return ModelMapperUtils.map(commentRepository.save(Comment.builder()
                 .post(post)
                 .visitor(visitor)
-                .authorType(AuthorType.ADMIN)
+                .authorType(AuthorType.VISITOR)
                 .content(commentRequestDto.getContent())
                 .build()), CommentResponseDto.class);
     }
@@ -90,7 +90,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public PaginateResponse<CommentResponseDto> getAllCommentsOfVisitorById( Long id, int start, int limit){
+    public PaginateResponse<CommentResponseDto> getAllCommentsOfVisitorById(Long id, int start, int limit){
 
         var visitor = visitorRepository.findById(id)
                 .orElseThrow(() -> new VisitorNotFoundException(id));

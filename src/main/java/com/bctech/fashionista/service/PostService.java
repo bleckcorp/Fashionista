@@ -4,6 +4,7 @@ import com.bctech.fashionista.dto.request.CategoryDto;
 import com.bctech.fashionista.dto.request.PostRequestDTO;
 import com.bctech.fashionista.dto.response.PaginateResponse;
 import com.bctech.fashionista.dto.response.PostResponseDto;
+import com.bctech.fashionista.entity.Post;
 
 public interface PostService {
 

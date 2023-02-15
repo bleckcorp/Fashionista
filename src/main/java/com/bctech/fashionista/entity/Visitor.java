@@ -14,13 +14,11 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
-public class Visitor {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Visitor extends BaseEntity  {
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false)
     private String fullName;
+
 
     private AuthorType authorType = AuthorType.VISITOR;
 

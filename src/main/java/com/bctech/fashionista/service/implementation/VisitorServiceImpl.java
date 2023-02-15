@@ -1,12 +1,10 @@
 package com.bctech.fashionista.service.implementation;
 
+import com.bctech.fashionista.constants.AuthorType;
 import com.bctech.fashionista.dto.request.LoginRequestDto;
 import com.bctech.fashionista.dto.request.VisitorRequestDto;
-import com.bctech.fashionista.dto.response.AdminResponseDto;
 import com.bctech.fashionista.dto.response.VisitorResponseDto;
-import com.bctech.fashionista.entity.Admin;
 import com.bctech.fashionista.entity.Visitor;
-import com.bctech.fashionista.exceptions.customexceptions.AdminNotFoundException;
 import com.bctech.fashionista.exceptions.customexceptions.VisitorNotFoundException;
 import com.bctech.fashionista.exceptions.customexceptions.WrongCredentialsException;
 import com.bctech.fashionista.repository.VisitorRepository;
@@ -29,11 +27,18 @@ public class VisitorServiceImpl implements VisitorService {
         visitorRepository.findByEmail(visitorRequestDto.getEmail()).ifPresent(user -> {
             throw new VisitorNotFoundException(visitorRequestDto.getEmail());
         });
-        return ModelMapperUtils.map(visitorRepository.save(Visitor.builder()
-                .fullName(visitorRequestDto.getName())
+
+        var visitor = Visitor.builder()
+                .fullName(visitorRequestDto.getFullName())
                 .email(visitorRequestDto.getEmail())
                 .password(visitorRequestDto.getPassword())
-                .build()), VisitorResponseDto.class);
+                .authorType(
+                        AuthorType.VISITOR
+                )
+                .build();
+        visitorRepository.save(visitor);
+
+        return ModelMapperUtils.map(visitor, VisitorResponseDto.class);
     }
     @Override
     public VisitorResponseDto updateVisitor(VisitorRequestDto visitorRequestDto, Long id) {
@@ -45,8 +50,8 @@ public class VisitorServiceImpl implements VisitorService {
             visitor.setEmail(visitorRequestDto.getEmail());
         }
 
-        if (!StringUtils.isBlank(visitorRequestDto.getName())) {
-            visitor.setFullName(visitorRequestDto.getName());
+        if (!StringUtils.isBlank(visitorRequestDto.getFullName())) {
+            visitor.setFullName(visitorRequestDto.getFullName());
         }
 
         if (!StringUtils.isBlank(visitorRequestDto.getPassword())) {

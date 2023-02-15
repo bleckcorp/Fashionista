@@ -11,8 +11,7 @@ import lombok.Data;
 public class CommentRequestDto {
     private String content;
     private Long postId;
-    private Long adminId;
-    private String visitorName;
-    private String visitorEmail;
+    private Long visitorId;
+
 
 }

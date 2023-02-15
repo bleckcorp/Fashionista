@@ -16,21 +16,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Comment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Comment extends BaseEntity {
+
 
     private String content;
-
-    @CreationTimestamp
-    private LocalDateTime creationDate;
 
     @ManyToOne
     @JoinColumn(name = "visitor_id")
     private Visitor visitor;
-
-    private Boolean isApproved = false;
 
     @Column(nullable = false)
     private AuthorType authorType;
